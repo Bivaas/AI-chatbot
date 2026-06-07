@@ -15,20 +15,21 @@ const createMessageElement = (content, classes) => {
 
 const handleOutgoingMessage = (e) => {
     e.preventDefault();
-
     userData.message = messageInput.value.trim();
+    messageInput.value = "";
 
-    const messageContent = `<div class="message-text">${userData.message}</div>`;
+    const messageContent = `<div class="message-text"></div>`;
 
     const outgoingMessageDiv = createMessageElement(messageContent, "user-message");
+    outgoingMessageDiv.querySelector(".message-text").textContent = userData.message;
     chatBody.appendChild(outgoingMessageDiv);
 }
 
-messageInput.addEventListener("Keydown", (e) => {
+messageInput.addEventListener("keydown", (e) => {
     const userMessage = e.target.value.trim();
         if(e.key === "Enter" && userMessage) {
-            handleOutgoingMessage(userMessage);
+            handleOutgoingMessage(e);
         }
 });
 
-sendMessageButton.addEventListener("click", (e) => handleOutgoingMessage)
+sendMessageButton.addEventListener("click", handleOutgoingMessage);
