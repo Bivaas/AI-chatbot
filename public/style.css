@@ -153,6 +153,25 @@ body {
     margin: 14px 0 8px
 }
 
+.chat-body .bot-message .message-text table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.chat-body .bot-message .message-text th,
+.chat-body .bot-message .message-text td {
+    border: 1px solid #CCCCDD;
+    padding: 6px 10px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.chat-body .bot-message .message-text > *:last-child {
+    margin-bottom: 0;
+}
+
+
 .chat-body .bot-message .thinking-indicator {
     display: flex;
     gap: 4px;
