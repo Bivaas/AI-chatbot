@@ -24,7 +24,7 @@ body {
     height: 100vh;
     background: #fff;
     overflow: hidden;
-    border-radius: 15px;
+    border-radius: 1px;
     box-shadow: 0 0 128px 0 rgba(0, 0, 0, 0.1),
     0 32px 64px -48px rgba(0,0,0, 0.5);
 }
@@ -130,6 +130,27 @@ body {
     color: #fff;
     background: blue;
     border-radius: 13px 13px 13px 3px;
+}
+
+.chat-body .bot-message .message-text p {
+    margin-bottom: 10px;
+}
+
+
+.chat-body .bot-message .message-text ul,
+.chat-body .bot-message .message-text ol {
+    padding-left: 22px;
+    margin-bottom: 10px;
+}
+
+.chat-body .bot-message .message-text li {
+    margin-bottom: 5px;
+}
+
+.chat-body .bot-message .message-text h1, 
+.chat-body .bot-message .message-text h2,
+.chat-body .bot-message .message-text h3 {
+    margin: 14px 0 8px
 }
 
 .chat-body .bot-message .thinking-indicator {
