@@ -1,6 +1,7 @@
 const chatBody = document.querySelector(".chat-body");
 const messageInput = document.querySelector(".message-input");
 const sendMessageButton = document.querySelector("#send-message");
+const API_URL = "/api/chat";
 
 const userData = {
     message: null
@@ -16,6 +17,7 @@ const createMessageElement = (content, classes) => {
 const handleOutgoingMessage = (e) => {
     e.preventDefault();
     userData.message = messageInput.value.trim();
+    if (!userData.message) return;
     messageInput.value = "";
 
     const userMessageContent = `<div class="message-text"></div>`;
@@ -37,10 +39,36 @@ const handleOutgoingMessage = (e) => {
                 </div>`;
 
         const incomingMessageDiv = createMessageElement(botMessageContent, "bot-message");
-        incomingMessageDiv.classList.add("thinking"); // Add the thinking class here
-        chatBody.appendChild(incomingMessageDiv); // Append the bot's message
+        incomingMessageDiv.classList.add("thinking"); 
+        chatBody.appendChild(incomingMessageDiv); 
+
+        generateBotResponse(incomingMessageDiv);
     }, 600);
-}
+
+    const generateBotResponse = async (incomingMessageDiv) => {
+        const messageTextElement = incomingMessageDiv.querySelector(".message-text");
+
+        try {
+            const response = await fetch(API_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json"},
+                body: JSON.stringify({ message: userData.message }),
+            });
+
+            const data = await response.json();
+            if (!response.ok) throw new Error("request failed !");
+            messageTextElement.textContent = data.reply;
+
+            } catch (error) {
+                console.error(error);
+                messageTextElement.textContent = "Sorry, something went wrong";
+
+            } finally {
+                incomingMessageDiv.classList.remove("thinking");
+            }
+
+        }
+    }
 
 messageInput.addEventListener("keydown", (e) => {
     const userMessage = e.target.value.trim();
