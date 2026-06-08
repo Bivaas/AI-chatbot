@@ -21,8 +21,8 @@ app.post("/api/chat", async (req, res) => {
         messages: [{ role: "user", content: message }],
         temperature: 1,
         top_p: 1,
-        max_tokens: 2048,
-        reasoning_effort: "medium",
+        max_tokens: 1024,
+        reasoning_effort: "low",
         stream: false,
       }),
     });

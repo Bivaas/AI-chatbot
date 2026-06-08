@@ -8,7 +8,7 @@ The model takes slightly longer time to respond due to two main reason. The firs
 
 # Next Future Improvements
 
-Implementing file upload either by using a vision , text hubrid model or seperating file upload with another AI model. This will be added after I finish up and polish my MVP. I will also add further emoji library and possibly add image generation futher down the line. 
+Implementing file upload either by using a vision , text hybrid model or seperating file upload with another AI model. This will be added after I finish up and polish my MVP. I will also add further emoji library and possibly add image generation futher down the line. 
 
 # Use of AI 
 

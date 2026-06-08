@@ -20,7 +20,8 @@ body {
 
 .chatbot-popup {
     position: relative;
-    width: 420px;
+    width: 100vw;
+    height: 100vh;
     background: #fff;
     overflow: hidden;
     border-radius: 15px;
@@ -52,7 +53,7 @@ body {
     border-radius: 50%;
 }
 
-.header-info .logo.text {
+.header-info .logo-text {
     color: #fff;
     font-size: 1.31rem;
     font-weight: 600;
@@ -80,7 +81,7 @@ body {
     padding: 25px 22px;
     display: flex;
     gap: 20px;
-    height: 460px;
+    height: calc(100vh - 145px);
     margin-bottom: 82px;
     overflow-y: auto;
     flex-direction: column;
@@ -89,7 +90,7 @@ body {
 .chat-body .message {
     display: flex;
     gap: 11px;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .chat-body .bot-message .bot-avatar {
