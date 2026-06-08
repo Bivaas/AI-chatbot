@@ -2,6 +2,7 @@ const chatBody = document.querySelector(".chat-body");
 const messageInput = document.querySelector(".message-input");
 const sendMessageButton = document.querySelector("#send-message");
 const API_URL = "/api/chat";
+const conversation = []
 
 const userData = {
     message: null
@@ -18,6 +19,7 @@ const handleOutgoingMessage = (e) => {
     e.preventDefault();
     userData.message = messageInput.value.trim();
     if (!userData.message) return;
+    conversation.push({ role: "user", content: userData.message});
     messageInput.value = "";
 
     const userMessageContent = `<div class="message-text"></div>`;
@@ -52,16 +54,17 @@ const handleOutgoingMessage = (e) => {
             const response = await fetch(API_URL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json"},
-                body: JSON.stringify({ message: userData.message }),
+                body: JSON.stringify({ messages: conversation }),
             });
 
             const data = await response.json();
             if (!response.ok) throw new Error("request failed !");
             messageTextElement.innerHTML = marked.parse(data.reply);
+            conversation.push({ role: "assistant", content: data.reply});
 
             } catch (error) {
                 console.error(error);
-                messageTextElement.textContent = "Sorry, something went wrong";
+                messageTextElement.textContent = "Something went wrong";
 
             } finally {
                 incomingMessageDiv.classList.remove("thinking");

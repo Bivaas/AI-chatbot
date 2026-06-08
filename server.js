@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const path = require("path");
+const systemprompt = require("./systemprompt");
 
 const app = express();
 app.use(express.json());
@@ -8,7 +9,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.post("/api/chat", async (req, res) => {
   try {
-    const { message } = req.body;
+    const { messages } = req.body;
 
     const response = await fetch("https://integrate.api.nvidia.com/v1/chat/completions", {
       method: "POST",
@@ -18,7 +19,7 @@ app.post("/api/chat", async (req, res) => {
       },
       body: JSON.stringify({
         model: "openai/gpt-oss-120b",
-        messages: [{ role: "user", content: message }],
+        messages: [{ role: "system", content: systemprompt },...messages],
         temperature: 1,
         top_p: 1,
         max_tokens: 1024,
