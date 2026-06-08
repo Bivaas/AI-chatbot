@@ -57,7 +57,7 @@ const handleOutgoingMessage = (e) => {
 
             const data = await response.json();
             if (!response.ok) throw new Error("request failed !");
-            messageTextElement.textContent = data.reply;
+            messageTextElement.innerHTML = marked.parse(data.reply);
 
             } catch (error) {
                 console.error(error);
