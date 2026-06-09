@@ -29,15 +29,23 @@ const handleOutgoingMessage = (e) => {
     e.preventDefault();
     userData.message = messageInput.value.trim();
     if (!userData.message) return;
-    conversation.push({ role: "user", content: userData.message});
+    conversation.push({
+        role: "user",
+        content: userData.file.data
+            ? [
+                { type: "text", text: userData.message },
+                { type: "image_url", image_url: { url: `data:${userData.file.mime_type};base64,${userData.file.data}`}}
+              ]
+            : userData.message
+    });
     messageInput.value = "";
     fileUploadWrapper.classList.remove("file-uploaded");
 
-    const messageContent = `<div class="message-text"></div>`;
+    const messageContent = `<div class="message-text"></div>
             ${userData.file.data ? `<img src="data:${userData.file.mime_type};base64,${userData.file.data}" class="attachment" />` : ""}`;
 
 
-    const outgoingMessageDiv = createMessageElement(userMessageContent, "user-message");
+    const outgoingMessageDiv = createMessageElement(messageContent, "user-message");
     outgoingMessageDiv.querySelector(".message-text").textContent = userData.message;
     chatBody.appendChild(outgoingMessageDiv);
 
@@ -68,7 +76,7 @@ const handleOutgoingMessage = (e) => {
             const response = await fetch(API_URL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json"},
-                body: JSON.stringify({ messages: conversation , ...(userData.file.data ? [{ inline_data: userData.file }] : []  )}),
+                body: JSON.stringify({ messages: conversation }),
             });
 
             const data = await response.json();
@@ -84,7 +92,7 @@ const handleOutgoingMessage = (e) => {
              // remove user file data after message sent
                 userData.file = {};  
                 incomingMessageDiv.classList.remove("thinking");
-                chatBody.scrollTo({ top: chatBody.scrollHeight, behaviour: "smooth" });
+                chatBody.scrollTo({ top: chatBody.scrollHeight, behavior: "smooth" });
             }
 
         }
@@ -103,8 +111,8 @@ fileInput.addEventListener("change", () => {
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onLoad = (e) => {
-        fileUploadWrapper.querySelector("img).src = e.target.result;
+    reader.onload = (e) => {
+        fileUploadWrapper.querySelector("img").src = e.target.result;
         fileUploadWrapper.classList.add("file-uploaded");
         const base64String = e.target.result.split(",")[1];
 
@@ -125,7 +133,8 @@ fileCancelButton.addEventListener("click", () => {
     fileUploadWrapper.classList.remove("file-uploaded");
 });
 
-
+// send message eventlistener
 sendMessageButton.addEventListener("click", handleOutgoingMessage);
 
+// fileupload eventlistener
 document.querySelector("#file-upload").addEventListener("click", () => fileInput.click());

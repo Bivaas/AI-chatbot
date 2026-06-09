@@ -14,16 +14,16 @@ app.post("/api/chat", async (req, res) => {
     const response = await fetch("https://integrate.api.nvidia.com/v1/chat/completions", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${process.env.API_KEY}`,
+        "Authorization": `Bearer ${process.env.VIS_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "nvidia/nemotron-3-ultra-550b-a55b",
+        model: "meta/llama-3.2-90b-vision-instruct",
         messages: [{ role: "system", content: systemprompt },...messages],
         temperature: 1,
         top_p: 1,
-        max_tokens: 1024,
-        reasoning_effort: "low",
+        max_tokens: 2048,
+        // reasoning_effort: "low", (I've used non reasoning model right now)
         stream: false,
       }),
     });
