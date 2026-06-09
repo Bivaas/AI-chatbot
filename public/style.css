@@ -232,6 +232,7 @@ body {
 
 .chat-footer .chat-form {
     display: flex;
+    position: relative;
     align-items: center;
     background: #fff;
     border-radius: 32px;
@@ -255,6 +256,7 @@ body {
 
 .chat-form .chat-controls { 
     display: flex;
+    position: relative;
     height: 47px;
     gap: 3px;
     align-items: center;
@@ -325,4 +327,19 @@ body {
 .chat-form .file-upload-wrapper.file-uploaded img,
 .chat-form .file-upload-wrapper.file-uploaded:hover #file-cancel {
     display: block;
+}
+
+em-emoji-picker {
+    position: absolute;
+    bottom: 50px;
+    right: 0;
+    width: 100%;
+    max-width: 350px;
+    max-height: 330px;
+    visibility: hidden;
+    transform: translateX(-5%);
+}
+
+body.show-emoji-picker em-emoji-picker {
+    visibility: visible;
 }

@@ -7,6 +7,7 @@ const app = express();
 app.use(express.json( { limit: "25mb" }));
 app.use(express.static(path.join(__dirname, "public")));
 
+// API setup
 app.post("/api/chat", async (req, res) => {
   try {
     const { messages } = req.body;
