@@ -1,11 +1,20 @@
 const chatBody = document.querySelector(".chat-body");
 const messageInput = document.querySelector(".message-input");
 const sendMessageButton = document.querySelector("#send-message");
+const fileInput = document.querySelector("#file-input");
+const fileUploadWrapper = document.querySelector(".file-upload-wrapper");
+const fileCancelButton = document.querySelector("#file-cancel");
+
+
 const API_URL = "/api/chat";
 const conversation = []
 
 const userData = {
-    message: null
+    message: null,
+    file: {
+        data: null,
+        mime_type: null
+    }
 }
 
 const createMessageElement = (content, classes) => {
@@ -15,14 +24,19 @@ const createMessageElement = (content, classes) => {
     return div;
 }
 
+// outgoing user mesages
 const handleOutgoingMessage = (e) => {
     e.preventDefault();
     userData.message = messageInput.value.trim();
     if (!userData.message) return;
     conversation.push({ role: "user", content: userData.message});
     messageInput.value = "";
+    fileUploadWrapper.classList.remove("file-uploaded");
 
-    const userMessageContent = `<div class="message-text"></div>`;
+    const messageContent = `<div class="message-text"></div>`;
+            ${userData.file.data ? `<img src="data:${userData.file.mime_type};base64,${userData.file.data}" class="attachment" />` : ""}`;
+
+
     const outgoingMessageDiv = createMessageElement(userMessageContent, "user-message");
     outgoingMessageDiv.querySelector(".message-text").textContent = userData.message;
     chatBody.appendChild(outgoingMessageDiv);
@@ -54,7 +68,7 @@ const handleOutgoingMessage = (e) => {
             const response = await fetch(API_URL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json"},
-                body: JSON.stringify({ messages: conversation }),
+                body: JSON.stringify({ messages: conversation , ...(userData.file.data ? [{ inline_data: userData.file }] : []  )}),
             });
 
             const data = await response.json();
@@ -67,7 +81,10 @@ const handleOutgoingMessage = (e) => {
                 messageTextElement.textContent = "Something went wrong";
 
             } finally {
+             // remove user file data after message sent
+                userData.file = {};  
                 incomingMessageDiv.classList.remove("thinking");
+                chatBody.scrollTo({ top: chatBody.scrollHeight, behaviour: "smooth" });
             }
 
         }
@@ -80,4 +97,35 @@ messageInput.addEventListener("keydown", (e) => {
         }
 });
 
+// input change and preview of file selected
+fileInput.addEventListener("change", () => {
+    const file = fileInput.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onLoad = (e) => {
+        fileUploadWrapper.querySelector("img).src = e.target.result;
+        fileUploadWrapper.classList.add("file-uploaded");
+        const base64String = e.target.result.split(",")[1];
+
+        userData.file = {
+            data: base64String, 
+            mime_type: file.type
+        }
+
+        fileInput.value = "";
+    }
+
+    reader.readAsDataURL(file);
+})
+
+// fileupload cancel 
+fileCancelButton.addEventListener("click", () => {
+    userData.file = {};
+    fileUploadWrapper.classList.remove("file-uploaded");
+});
+
+
 sendMessageButton.addEventListener("click", handleOutgoingMessage);
+
+document.querySelector("#file-upload").addEventListener("click", () => fileInput.click());

@@ -18,7 +18,7 @@ app.post("/api/chat", async (req, res) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "openai/gpt-oss-120b",
+        model: "nvidia/nemotron-3-ultra-550b-a55b",
         messages: [{ role: "system", content: systemprompt },...messages],
         temperature: 1,
         top_p: 1,
