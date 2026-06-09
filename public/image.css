@@ -1,0 +1,39 @@
+/* getting enter font from google tag manager */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+
+*{
+    font-family: "Inter", sans-serif;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* This is copy-pasted color palette */ 
+:root{
+    --color-primary: #5c56e1;
+    --color-primary-dark: #5b21b6;
+    --color-accent: #8b5cf6;
+    --color-card: #ffffff;    
+    --color-input: #f1f1ff;
+    --color-text: #09090e;
+    --color-placeholder: #5c5a87;
+    --color-border:#d4d4ed;
+   --color-gradient: linear-gradient(135deg, #5c56e1, #8b5cf6);
+}
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    color: var(--color-text);
+    background: linear-gradient(#e9e9ff, #c8c7ff);
+}
+
+.container{
+    width: 900px;
+    padding: 32px;
+    border-radius: 23px;
+    background: var(--color-card);
+    box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0,1);
+}

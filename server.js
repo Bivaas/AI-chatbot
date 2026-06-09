@@ -4,10 +4,12 @@ const path = require("path");
 const systemprompt = require("./systemprompt");
 
 const app = express();
+
+// default 100kb limit is not enough for base64 for image conversion and then sending as json
 app.use(express.json( { limit: "25mb" }));
 app.use(express.static(path.join(__dirname, "public")));
 
-// API setup
+// API setup from NVIDIA website 
 app.post("/api/chat", async (req, res) => {
   try {
     const { messages } = req.body;

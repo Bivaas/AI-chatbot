@@ -1,3 +1,4 @@
+/* inter fonts from google */
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 
@@ -17,6 +18,7 @@ body {
     background: linear-gradient(#EEEEFF, #C8C7FF)
 
 }
+
 
 .chatbot-popup {
     position: relative;
@@ -68,7 +70,7 @@ body {
     margin-right: -10px;
     padding-top: 2px;
     cursor: pointer;
-    border-radius: 50%;
+     border-radius: 50%;
     background: none;
     transition: 0.2s ease;
 }
@@ -77,6 +79,7 @@ body {
     background: blue;
 }
 
+/* main chat body section */
 .chat-body {
     padding: 25px 22px;
     display: flex;
@@ -87,11 +90,13 @@ body {
     flex-direction: column;
 }
 
+/* message section of chat body (user and bot both) */ 
 .chat-body .message {
     display: flex;
     gap: 11px;
     align-items: flex-start;
 }
+
 
 .chat-body .bot-message .bot-avatar {
     height: 35px;
@@ -207,6 +212,7 @@ body {
     animation-delay: 0.4s;
 }
 
+/* bot typing aniamtion with some delay and fade anims */
 @keyframes dotPulse {
     0%, 44% {
         transform: translateY(0);
@@ -243,6 +249,7 @@ body {
     outline: 2px solid blue;
 }
 
+
 .chat-form .message-input {
     border: none;
     outline: none;
@@ -273,7 +280,7 @@ body {
     color: #706DB0;
     background: none;
     border-radius: 50%;
-    transition: 0.2s ease;
+     transition: 0.2s ease;
 }
 
 .chat-form .chat-controls #send-message {
@@ -281,6 +288,7 @@ body {
     background: #5350C4;
     display: none;
 }
+
 
 .chat-form .message-input:valid~.chat-controls #send-message {
     display: block;
@@ -294,6 +302,7 @@ body {
     background: #f1f1ff;
 }
 
+/* file uplaod */ 
 .chat-form .file-upload-wrapper {
     height: 35px;
     width: 35px;
@@ -325,10 +334,11 @@ body {
 }
 
 .chat-form .file-upload-wrapper.file-uploaded img,
-.chat-form .file-upload-wrapper.file-uploaded:hover #file-cancel {
+ .chat-form .file-upload-wrapper.file-uploaded:hover #file-cancel {
     display: block;
 }
 
+/* emoji picker at right side */ 
 em-emoji-picker {
     position: absolute;
     bottom: 50px;

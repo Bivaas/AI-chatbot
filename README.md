@@ -7,13 +7,9 @@ on in future.
 
 # Known issues 
 
-The model takes slightly longer time to respond due to two main reason. The first reason being that API is used which delays the response and second is that a relatively high parameter model is used. To minimize this: I've reduced token limit fast response.
+The model takes slightly longer time to respond due to two main reason. The first reason being that API is used which delays the response and second is that a relatively high parameter model is used. To minimize this: I've reduced token limit for fast response.
 
 Text conversations are stored in memory as array and forwarded in next chat. If you initiate two different conversation with different context, the AI model might hallucinate (it did for me when I was doing image upload)
-
-If you see "I can't help with that" or "Something went wrong" then do a quick refresh of site with F5. This can happen since every conversation is stored for context / memory. For file upload, this issue does not happen since stripOldImages function clears away old imgs.
-
-NOTE: If you upload two images, the previous image content and its details remain lost since API provider only accepts one image at a time. 
 
 # Next Future Improvements
 
@@ -22,3 +18,9 @@ I would be adding several features like Dedicated database for storage, oauth fo
 # Use of AI 
 
 I have only used AI for debugging code and improving my own code which had some issues. I used claude for finding some flaws in integration of API properly. I mostly used AI for diagnosing issues and making sure my code works. If I had to guess a rough estimate, My AI use would be below (10-20)% on this project. 
+
+# Note:
+
+If you see "I can't help with that" or "Something went wrong" then do a quick refresh of site with F5. This can happen since every conversation is stored for context / memory. For file upload, this issue does not happen since stripOldImages function clears away old imgs.
+
+If you upload two images, the previous image content and its details remain lost since API provider only accepts one image at a time. 
