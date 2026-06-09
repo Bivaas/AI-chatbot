@@ -13,6 +13,8 @@ Text conversations are stored in memory as array and forwarded in next chat. If 
 
 If you see "I can't help with that" or "Something went wrong" then do a quick refresh of site with F5. This can happen since every conversation is stored for context / memory. For file upload, this issue does not happen since stripOldImages function clears away old imgs.
 
+NOTE: you can upload only one image in one chat-session, sadly due to API restriction. however you can refresh and upload again. 
+
 # Next Future Improvements
 
 I would be adding several features like Dedicated database for storage, oauth for authentication / login, rate limitng to not overwhelm API usage, image generation through open-source AI model and multi chat UI (similar to chatgpt)

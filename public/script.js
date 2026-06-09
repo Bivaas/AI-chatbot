@@ -71,11 +71,16 @@ const handleOutgoingMessage = (e) => {
     
     // helper function for removing uploaded image in memory 
     const stripOldImages = () => {
-        for (let i = 0; i < conversation.length -1; i++) {
-            const msg = conversation[i];
-            if (Array.isArray(msg.content)) {
-                const textPart = meg.content.find(p => p.type === "text");
-                msg.content = textPart ? textPart.text : "";
+        let lastImageIndex = -1;
+        for (let i = 0; i < conversation.length; i++) {
+            if (Array.isArray(conversation[i].content)) lastImageIndex = i;
+        }
+
+        for (let i = 0; i < conversation.length; i++) {
+            
+              if (Array.isArray(conversation[i].content) && i !== lastImageIndex) {
+                const textPart = conversation[i].content.find(p => p.type === "text");
+                conversation[i].content = textPart ? textPart.text : "";
             }
         }
     };

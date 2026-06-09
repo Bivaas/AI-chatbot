@@ -33,9 +33,9 @@ app.post("/api/chat", async (req, res) => {
 
     res.json({ reply: data.choices[0].message.content });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Something went wrong" });
-  }
+        console.error(err);
+        res.status(500).json({ error: "Something went wrong" });
+      }
 });
 
 app.listen(3000, () => console.log("Server running on http://localhost:3000"));
