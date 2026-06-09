@@ -9,7 +9,9 @@ on in future.
 
 The model takes slightly longer time to respond due to two main reason. The first reason being that API is used which delays the response and second is that a relatively high parameter model is used. To minimize this: I've reduced token limit fast response.
 
-Text conversations are stored in memory as array and forwarded in next chat. If you initiate two different conversation with different context, the AI model might hallucinate (it did for me when I was doing multi-image upload)
+Text conversations are stored in memory as array and forwarded in next chat. If you initiate two different conversation with different context, the AI model might hallucinate (it did for me when I was doing image upload)
+
+If you see "I can't help with that" or "Something went wrong" then do a quick refresh of site with F5. This can happen since every conversation is stored for context / memory. For file upload, this issue does not happen since stripOldImages function clears away old imgs.
 
 # Next Future Improvements
 

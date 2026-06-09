@@ -68,11 +68,23 @@ const handleOutgoingMessage = (e) => {
 
         generateBotResponse(incomingMessageDiv);
     }, 600);
+    
+    // helper function for removing uploaded image in memory 
+    const stripOldImages = () => {
+        for (let i = 0; i < conversation.length -1; i++) {
+            const msg = conversation[i];
+            if (Array.isArray(msg.content)) {
+                const textPart = meg.content.find(p => p.type === "text");
+                msg.content = textPart ? textPart.text : "";
+            }
+        }
+    };
 
     const generateBotResponse = async (incomingMessageDiv) => {
         const messageTextElement = incomingMessageDiv.querySelector(".message-text");
 
         try {
+            stripOldImages();
             const response = await fetch(API_URL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json"},
