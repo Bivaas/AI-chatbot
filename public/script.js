@@ -48,6 +48,7 @@ const handleOutgoingMessage = (e) => {
     const outgoingMessageDiv = createMessageElement(messageContent, "user-message");
     outgoingMessageDiv.querySelector(".message-text").textContent = userData.message;
     chatBody.appendChild(outgoingMessageDiv);
+    chatBody.scrollTo({ top: chatBody.scrollHeight, behavior: "smooth"});
 
     setTimeout(() => {
         const botMessageContent = `<svg class="bot-avatar" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 1024 1024">
@@ -65,6 +66,7 @@ const handleOutgoingMessage = (e) => {
         const incomingMessageDiv = createMessageElement(botMessageContent, "bot-message");
         incomingMessageDiv.classList.add("thinking"); 
         chatBody.appendChild(incomingMessageDiv); 
+        chatBody.scrollTo({ top: chatBody.scrollHeight, behavior: "smooth"});
 
         generateBotResponse(incomingMessageDiv);
     }, 600);
