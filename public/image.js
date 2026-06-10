@@ -19,7 +19,7 @@ const examplePrompts = [
     
 "A quick brown box jumps over a lazy dog",
 "An apple a day keeps the doctor away"
-//some example prompts collection to be added
+//some example prompts collection to be added later on
 
 
 ];
@@ -36,7 +36,7 @@ const createImageCards = (selectModel, imageCount, aspectRatio, promptText) => {
     gridGallery.innerHTML = "";
 
     for (let i = 0; i < imageCount; i++) {
-        gridGallery.innerHTML += `<div class="img-card" id="img-card-${i}" style="aspect-ratio: ${aspectRatio}"   >
+        gridGallery.innerHTML += `<div class="img-card loading" id="img-card-${i}" style="aspect-ratio: ${aspectRatio}"   >
 
                             <div class="status-container">
 

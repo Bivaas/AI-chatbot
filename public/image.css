@@ -280,7 +280,7 @@ body{
 .gallery-grid .img-card .status-container {
     padding: 15px;
     display: none;
-    gap: 13pxl;;
+    gap: 13px;
     flex-direction: column;
     align-items: center;
 }

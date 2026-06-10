@@ -78,7 +78,7 @@ app.post("/api/chat", async (req, res) => {
       },
       body: JSON.stringify({
         model: "${selectedModel}",
-        messages=[{"role":"user","content":""}]
+        // messages=[{"role":"user","content":""}]
       }),
     });
 
