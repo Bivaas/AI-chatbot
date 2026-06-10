@@ -25,7 +25,7 @@ app.post("/api/chat", async (req, res) => {
         messages: [{ role: "system", content: systemprompt },...messages],
         temperature: 1,
         top_p: 1,
-        max_tokens: 4096,
+        max_tokens: 4096, // def is around 16k but lowered for fast output
         // reasoning_effort: "low", (I've used non reasoning model right now)
         stream: false,
       }),
