@@ -10,18 +10,52 @@ const countSelect = document.querySelector(".count-select");
 
 const ratioSelect = document.querySelector(".ratio-select");
 
+const gridGallery = document.querySelector(".gallery-grid");
+
+
 
 
 const examplePrompts = [ 
     
-"a quick brown box jumps over a lazy road",
-"apple a day keeps the doctor away"
+"A quick brown box jumps over a lazy dog",
+"An apple a day keeps the doctor away"
 //some example prompts collection to be added
 
 
 ];
 
+// For placeholder cards and their classification too
+const createImageCards = (selectModel, imageCount, aspectRatio, promptText) => {
 
+    gridGallery.innerHTML = "";
+
+    for (let i = 0; i < imageCount; i++) {
+        gridGallery.innerHTML += `<div class="img-card" id="img-card-${i}" style="aspect-ratio: ${aspectRatio}"   >
+
+                            <div class="status-container">
+
+                                <div class="spinner"> </div>
+
+                                    <i class="fa-solid fa-triangle-exclamation"></i>
+
+                                    <p class="status-text">
+                                        Generating
+                                    </p>
+                                
+                                            <!-- HTML section for UIball loading animation -->                                       
+                                            <div class="uib-loader">
+                                            <div class="dot"></div>
+                                            <div class="dot"></div>
+                                            <div class="dot"></div>
+                                            </div>
+                                    
+                            </div>
+
+                        </div>`;
+    }
+}
+
+// form data / values and their submission handle: 
 const handleFormSubmit = (e) => {
     e.preventDefault();
 
@@ -30,7 +64,7 @@ const handleFormSubmit = (e) => {
     const aspectRatio = ratioSelect.value || "1/1"
     const promptText = promptInput.value.trim();
 
-    
+    createImageCards(selectedModel, imageCount, aspectRatio, promptText);
 }
 
 // eventlistener to fill prompt with random pre-selected prompt from above
