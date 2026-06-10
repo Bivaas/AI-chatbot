@@ -169,6 +169,10 @@ body{
 
 }
 
+.prompt-actions .custom-select:is(:focus, :hover) {
+    border-color: var(--color-accent);
+}
+
 
 .prompt-actions .select-wrapper {
     position: relative;
@@ -181,8 +185,26 @@ body{
     position: absolute;
     right: 20px;
     top: 50%;
+    font-size: 0.9rem;
     transform: translateY(-50%);
     padding-left: 7px;
     pointer-events: none;
     color: var(--color-placeholder);
 }
+
+.prompt-actions .generate-btn {
+    display: flex;
+    font-weight: bold;
+    font-size: 32;
+    color: #fff;
+    background: rgb(32, 99, 36);
+    opacity: 0.7;
+    border-radius: 10px;
+}
+
+.prompt-actions .generate-btn:hover {
+    opacity: 1;;
+    background:rgb(48, 165, 56);
+}
+
+
