@@ -4,11 +4,11 @@ const promptForm = document.querySelector(".prompt-form");
 
 const promptBtn = document.querySelector(".prompt-btn");
 
-const modelSelect = document.querySelector(".model-select");
+const modelSelect = document.querySelector("#model-select");
 
-const countSelect = document.querySelector(".count-select");
+const countSelect = document.querySelector("#count-select");
 
-const ratioSelect = document.querySelector(".ratio-select");
+const ratioSelect = document.querySelector("#ratio-select");
 
 const gridGallery = document.querySelector(".gallery-grid");
 
@@ -23,6 +23,12 @@ const examplePrompts = [
 
 
 ];
+
+
+const generateImages = (selectModel, imageCount, aspectRatio, promptText) => {
+    const MODEL_URL =""; 
+}
+
 
 // For placeholder cards and their classification too
 const createImageCards = (selectModel, imageCount, aspectRatio, promptText) => {
@@ -49,10 +55,12 @@ const createImageCards = (selectModel, imageCount, aspectRatio, promptText) => {
                                             <div class="dot"></div>
                                             </div>
                                     
-                            </div>
+                                </div>
+                            </div>`;
 
-                        </div>`;
     }
+
+    generateImages(selectModel, imageCount, aspectRatio, promptText);
 }
 
 // form data / values and their submission handle: 
