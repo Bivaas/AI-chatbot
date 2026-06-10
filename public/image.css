@@ -287,8 +287,7 @@ body{
 
 }
 
-.gallery-grid .img-card.loading .status-container i,
-.gallery-grid .img-card.error .spinner {
+.gallery-grid .img-card.loading .status-container i,.gallery-grid .img-card.error .spinner,.gallery-grid .img-card.error .uib-loader {
 
     display: none;
 }
@@ -374,7 +373,8 @@ body{
 
 /* animattion end -- */
 
-.gallery-grid .img-card .ststus-text { 
+.gallery-grid .img-card .status-text { 
     font-size: 0.85rem;
 
 }
+

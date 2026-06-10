@@ -42,7 +42,7 @@
 
                     <div class="select-wrapper">
 
-                        <select class="custom-select" required>
+                        <select class="custom-select" id="model-select" required>
 
                             <option value="" select disabled>Choose Model</option>
                             <option value="black-forest-labs/FLUX.1-dev">FLUX.1-dev</option>
@@ -56,7 +56,7 @@
 
                     <div class="select-wrapper">
 
-                        <select class="custom-select" required>
+                        <select class="custom-select" id="count-select" required>
 
                             <option value="" select disabled>Image Count</option>
                             <option value="1">1 Image</option>
@@ -71,7 +71,7 @@
 
                      <div class="select-wrapper">
 
-                        <select class="custom-select" required>
+                        <select class="custom-select" id="ratio-select"  required>
 
                             <option value="" select disabled>Aspect Ratio</option>
                             <option value="1">Square (1:1)</option>
@@ -89,7 +89,7 @@
                     <!-- Final output image gallery grid-->
                     <div class="gallery-grid">
 
-                        <div class="img-card loading">
+                        <div class="img-card error">
 
                             <div class="status-container">
 
