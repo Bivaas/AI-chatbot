@@ -9,7 +9,8 @@ const app = express();
 app.use(express.json( { limit: "25mb" }));
 app.use(express.static(path.join(__dirname, "public")));
 
-// API setup from NVIDIA website (for chatbot)
+
+// API setup from NVIDIA website (for CHATBOT)
 app.post("/api/chat", async (req, res) => {
   try {
     const { messages } = req.body;
@@ -17,7 +18,7 @@ app.post("/api/chat", async (req, res) => {
     const response = await fetch("https://integrate.api.nvidia.com/v1/chat/completions", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${process.env.VIS_API_KEY}`,
+        "Authorization": `Bearer ${process.env.VIS_API_KEY}`,  // by VIS, I meant vision + text hybrid model
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -25,7 +26,7 @@ app.post("/api/chat", async (req, res) => {
         messages: [{ role: "system", content: systemprompt },...messages],
         temperature: 1,
         top_p: 1,
-        max_tokens: 4096, // def is around 16k but lowered for fast output
+        max_tokens: 6144, // def is around 16k but lowered for fast output
         // reasoning_effort: "low", (I've used non reasoning model right now)
         stream: false,
       }),
@@ -48,7 +49,7 @@ const updateImageCard = (imgIndex, imgUrl) => {
   if(!imgCard) return;
 
 
-  // loading animation to be replaced by the actual image
+  // loading animation to be replaced by the actual image (dynamically changed)
   imgCard.classList.remove("loading");
   imgCard.innerHTML = `<img src="${imgUrl}" class="result-img">
 
@@ -63,38 +64,39 @@ const generateImages = async (selectedModel, imageCount, aspectRatio, promptText
   const { width, height } = getImageDimenstions(aspectRatio);
 }
 
-//API setup from NVIDIA (for image gen)
-const imagePromises = Array.from({length: imageCount}, async(_, i) => {   // inside array of image generation promises
- 
-app.post("/api/chat", async (req, res) => {
-  try {
-    const { messages } = req.body;
 
-    const response = await fetch("https://integrate.api.nvidia.com/v1/genai/${selectedModel}", {
+//API setup from NVIDIA (for image gen)
+ 
+app.post("/api/generate-image", async (req, res) => {
+  try {
+    const { model, prompt } = req.body;
+
+    const response = await fetch(`https://integrate.api.nvidia.com/v1/genai/${model}`, {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${process.env.API_KEY}`,
+        "Authorization": `Bearer ${process.env.FLUXDEV_API_KEY}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        model: "${selectedModel}",
-        // messages=[{"role":"user","content":""}]
-      }),
+      body: JSON.stringify({ prompt: prompt }),
     });
 
-    if (!response.ok) throw new Error((await response.json())?.error);
-
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Failed to generate image.");
+    }
 
     // for converting response to image URL and then updating the img card
-    const result = await response.blob();
-    updateImageCard(i, URL.createObjectURL(result));
-  } catch(error) {
-    console.log(error);
-      }
-});
+    const buffer = await response.arrayBuffer();
+    const base64Image = Buffer.from(buffer).toString('base64');
 
-  await Promise.allSettled(imagePromises);
-})
+    // Sending img back to the client as JSON
+    res.json({ imageBase64: `data:image/jpeg;base64,${base64Image}` });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error.message });
+  }
+});
 
 
 

@@ -12,22 +12,56 @@ const ratioSelect = document.querySelector("#ratio-select");
 
 const gridGallery = document.querySelector(".gallery-grid");
 
-
-
-
 const examplePrompts = [ 
-    
 "A quick brown box jumps over a lazy dog",
 "An apple a day keeps the doctor away"
 //some example prompts collection to be added later on
-
-
 ];
 
+const updateImageCard = (imgIndex, imgUrl) => {
+    const imgCard = document.getElementById(`img-card-${imgIndex}`);
+    if (!imgCard) return;
 
-const generateImages = (selectModel, imageCount, aspectRatio, promptText) => {
-    const MODEL_URL =""; 
-}
+    imgCard.classList.remove("loading");
+    imgCard.innerHTML = `
+        <img src="${imgUrl}" class="result-img">
+        <div class="img-overlay">
+            <a href="${imgUrl}" class="img-download-btn" download="AI_Image_${Date.now()}.png">
+                <i class="fa-solid fa-download"></i>
+            </a>
+         </div>
+         `;
+};
+
+const generateImages = async (selectedModel, imageCount, aspectRatio, promptText) => {
+    // array for making the request of image count correct
+    const imagePromises = Array.from({ length: imageCount }, async (_, i) => {
+        try { 
+            const response = await fetch("/api/generate-image", {
+                method: "POST",
+                headers: { "Content-Type": "application/json"},
+                body: JSON.stringify({ model: selectedModel, prompt: promptText}),
+            });
+
+            if (!response.ok) throw new Error("Could not fetch image");
+
+            const data = await response.json();
+            updateImageCard(i, data.imageBase64);
+        }
+        catch(error) {
+            console.error(error);
+            const imgCard = document.getElementById(`img-card-${i}`);
+
+            // for red triangle and UI ball animation to be started dynamically
+            if (imgCard) {
+                imgCard.classList.remove("loading");
+                imgCard.classList.add("error");
+            }
+        }
+    });
+
+    await Promise.allSettled(imagePromises);
+};
 
 
 // For placeholder cards and their classification too
