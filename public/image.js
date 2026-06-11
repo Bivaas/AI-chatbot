@@ -19,19 +19,22 @@ const examplePrompts = [
 ];
 
 const updateImageCard = (imgIndex, imgUrl) => {
-    const imgCard = document.getElementById(`img-card-${imgIndex}`);
-    if (!imgCard) return;
+  const imgCard = document.getElementById(`img-card-${ingIndex}`)
 
-    imgCard.classList.remove("loading");
-    imgCard.innerHTML = `
-        <img src="${imgUrl}" class="result-img">
-        <div class="img-overlay">
-            <a href="${imgUrl}" class="img-download-btn" download="AI_Image_${Date.now()}.png">
-                <i class="fa-solid fa-download"></i>
-            </a>
-         </div>
-         `;
-};
+  if(!imgCard) return;
+
+
+  // loading animation to be replaced by the actual image (dynamically changed)
+  imgCard.classList.remove("loading");
+  imgCard.innerHTML = `<img src="${imgUrl}" class="result-img">
+
+                            <div class="img-overlay">
+                                <a href="${imgUrl}" class="img-download-btn" download="${Date.now()}.png">
+                                    <i class="fa-solid fa-download"></i>
+                                </a>
+                            </div>`;
+}
+
 
 const generateImages = async (selectedModel, imageCount, aspectRatio, promptText) => {
     // array for making the request of image count correct

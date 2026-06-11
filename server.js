@@ -52,27 +52,6 @@ app.post("/api/chat", async (req, res) => {
 });
 
 
-const updateImageCard = (imgIndex, imgUrl) => {
-  const imgCard = document.getElementById(`img-card-${ingIndex}`)
-
-  if(!imgCard) return;
-
-
-  // loading animation to be replaced by the actual image (dynamically changed)
-  imgCard.classList.remove("loading");
-  imgCard.innerHTML = `<img src="${imgUrl}" class="result-img">
-
-                            <div class="img-overlay">
-                                <a href="${imgUrl}" class="img-download-btn" download="${Date.now()}.png">
-                                    <i class="fa-solid fa-download"></i>
-                                </a>
-                            </div>`;
-}
-
-const generateImages = async (selectedModel, imageCount, aspectRatio, promptText) => {
-  const { width, height } = getImageDimenstions(aspectRatio);
-}
-
 
 //API setup from NVIDIA (for image gen)
  
