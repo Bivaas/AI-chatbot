@@ -53,7 +53,7 @@ app.post("/api/chat", async (req, res) => {
 
 
 
-//API setup from NVIDIA (for image gen)
+//API setup from NVIDIA (for IMAGE GEN)
  
 app.post("/api/generate-image", async (req, res) => {
   try {
@@ -62,13 +62,23 @@ app.post("/api/generate-image", async (req, res) => {
     // from above, taking keys for selected specific model
     const apiKey = IMAGE_KEYS[model];
 
-    const response = await fetch(`https://integrate.api.nvidia.com/v1/genai/${model}`, {
+    const response = await fetch(`https://ai.api.nvidia.com/v1/genai/${model}`, {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${apiKey}`,
         "Content-Type": "application/json",
+        "Accept": "application/json",
       },
-      body: JSON.stringify({ prompt: prompt }),
+      body: JSON.stringify({ 
+        prompt: prompt,
+        mode: "base",
+        cfg_scale: 3.5,
+        width: 1024,
+        height: 1024,
+        seed: 0,
+        steps: 50,
+
+       }),
     });
 
     if (!response.ok) {
@@ -77,11 +87,16 @@ app.post("/api/generate-image", async (req, res) => {
     }
 
     // for converting response to image URL and then updating the img card
-    const buffer = await response.arrayBuffer();
-    const base64Image = Buffer.from(buffer).toString('base64');
+    const data = await response.json();
+
+    console.log(data); //for debugging and to be removed later    <--
+
+
+    const base64Image = data.artifacts[0].base64;
 
     // Sending img back to the client as JSON
     res.json({ imageBase64: `data:image/jpeg;base64,${base64Image}` });
+
 
   } catch (error) {
     console.error(error);

@@ -19,7 +19,7 @@ const examplePrompts = [
 ];
 
 const updateImageCard = (imgIndex, imgUrl) => {
-  const imgCard = document.getElementById(`img-card-${ingIndex}`)
+  const imgCard = document.getElementById(`img-card-${imgIndex}`)
 
   if(!imgCard) return;
 
