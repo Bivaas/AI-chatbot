@@ -5,12 +5,21 @@ const systemprompt = require("./systemprompt");
 
 const app = express();
 
+
+// getting each model their own API keys since NVIDIA does not provide single account based APIKEY. This matches to what usr selects and that specific model URL and then API key is selected.
+const IMAGE_KEYS = {
+  "black-forest-labs/flux.1-dev": process.env.FLUXDEV_API_KEY,
+  "black-forest-labs/flux.1-schnell": process.env.FLUXSCHNELL_API_KEY,
+  "stabilityai/stable-diffusion-3.5-large": process.env.STABLE_API_KEY,
+};
+
 // default 100kb limit is not enough for base64 for image conversion and then sending as json
 app.use(express.json( { limit: "25mb" }));
 app.use(express.static(path.join(__dirname, "public")));
 
 
 // API setup from NVIDIA website (for CHATBOT)
+
 app.post("/api/chat", async (req, res) => {
   try {
     const { messages } = req.body;
@@ -71,10 +80,13 @@ app.post("/api/generate-image", async (req, res) => {
   try {
     const { model, prompt } = req.body;
 
+    // from above, taking keys for selected specific model
+    const apiKey = IMAGE_KEYS[model];
+
     const response = await fetch(`https://integrate.api.nvidia.com/v1/genai/${model}`, {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${process.env.FLUXDEV_API_KEY}`,
+        "Authorization": `Bearer ${apiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ prompt: prompt }),
@@ -97,7 +109,6 @@ app.post("/api/generate-image", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-
 
 
 
