@@ -22,22 +22,17 @@
    --color-gradient: linear-gradient(135deg, #5c56e1, #8b5cf6);
 }
 body{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
     color: var(--color-text);
     background: linear-gradient(#e9e9ff, #c8c7ff);
 }
 
 .container{
-    width: 900px;
-    padding: 32px;
+    width: 100vw;
+    height: 100vw;
+    padding: 20px 32px;
     position: relative;
-    border-radius: 23px;
     overflow: hidden;
     background: var(--color-card);
-    box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0,1);
 }
 
 .container::before { 
@@ -56,10 +51,28 @@ body{
     justify-content: space-between;
 }
 
+.header .header-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
 .header .logo-wrapper { 
      display: flex;
      gap: 18px;
      align-items: center;
+}
+
+.header .header-controls .back-btn { 
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--color-text);
+    background: var(--color-input);
+    border-radius: 7px;
+
+    padding: 8px 16px;
+    gap: 8px;
 }
 
  .header .logo-wrapper .logo {
