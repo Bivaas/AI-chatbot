@@ -89,13 +89,13 @@ app.post("/api/generate-image", async (req, res) => {
     // for converting response to image URL and then updating the img card
     const data = await response.json();
 
-    console.log(data); //for debugging and to be removed later    <--
 
-
-    const base64Image = data.artifacts[0].base64;
+   const base64Image = data.artifacts[0].base64;         
 
     // Sending img back to the client as JSON
-    res.json({ imageBase64: `data:image/jpeg;base64,${base64Image}` });
+    res.json({ imageBase64: `data:image/jpeg;base64,${base64Image}` });        
+
+    // res.json({ imageBase64: data.image });
 
 
   } catch (error) {
