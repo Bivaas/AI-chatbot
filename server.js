@@ -85,7 +85,7 @@ app.post("/api/generate-image", async (req, res) => {
           samples: 1,
           width: 1024,
           height: 1024,
-          steps: model === "black-forest-labs/flux.1-schnell" ? 4 : 50,
+          steps: model === "black-forest-labs/flux.1-schnell" ? 4 : 25,
           seed: 0,
           
         };
