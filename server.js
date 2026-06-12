@@ -81,21 +81,38 @@ app.post("/api/generate-image", async (req, res) => {
        }),
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
+   if (!response.ok) {
+      const errorText = await response.text();
       throw new Error(errorData.error || "Failed to generate image.");
     }
 
-    // for converting response to image URL and then updating the img card
-    const data = await response.json();
+  // for converting response to image URL and then updating the img card
+   const data = await response.json();
+
+   
+
+  // since flux returns artifacts and not data-URL prefix and stable diffusion returns { image } which already includes prefix so the output is handled this way
+   let imageData;
+
+   if (data.artifacts && data.artifacts[0]) {
+
+    imageData = `data:image/jpeg;base64,${data.artifacts[0].base64}`;
+   } else if (data.image) {
+
+    imageData = data.image.startsWith("data:")
+
+      ? data.image
+      : `data:image/jpeg;base64, ${data.image}`;
+   }
+   else {
+
+    throw new error("unexpected image response format");
+
+   }
+  
+   res.json({ imageBase64: imageData});
 
 
-   const base64Image = data.artifacts[0].base64;         
-
-    // Sending img back to the client as JSON
-    res.json({ imageBase64: `data:image/jpeg;base64,${base64Image}` });        
-
-    // res.json({ imageBase64: data.image });
 
 
   } catch (error) {

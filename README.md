@@ -25,6 +25,8 @@ If you see "I can't help with that" or "Something went wrong" then do a quick re
 
 If you upload two images, the previous image content and its details remain lost since API provider only accepts one image at a time. 
 
-Theme toggle also does not work
+Theme toggle does not work
 
 The top-right button in chatbot UI is not configured to anything.
+
+aspect ratio only works for frontend grid (client side). If you download the image, you will get default square img

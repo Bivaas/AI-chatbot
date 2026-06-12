@@ -13,8 +13,11 @@ const ratioSelect = document.querySelector("#ratio-select");
 const gridGallery = document.querySelector(".gallery-grid");
 
 const examplePrompts = [ 
+    
 "A quick brown box jumps over a lazy dog",
-"An apple a day keeps the doctor away"
+"An apple a day keeps the doctor away",
+"A simple coffee shop interior"
+
 //some example prompts collection to be added later on
 ];
 

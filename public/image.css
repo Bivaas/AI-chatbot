@@ -28,7 +28,7 @@ body{
 
 .container{
     width: 100vw;
-    height: 100vw;
+    height: 100vh;
     padding: 20px 32px;
     position: relative;
     overflow: hidden;
@@ -115,7 +115,9 @@ body{
 }
 
 .main-content { 
-    margin: 35px 0 5px;
+    margin: 35px auto 5px;
+    padding-top: 2.7rem;
+    max-width: 970px;
 }
 
 .main-content .prompt-container{
