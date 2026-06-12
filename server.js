@@ -5,12 +5,25 @@ const systemprompt = require("./systemprompt");
 
 const app = express();
 
+// routing to have clean URL in chatbot page and image page
+app.get("/image", (req, res) => {
+
+  res.sendFile(path.join(__dirname, "public", "image.html"));
+});
+
+
+app.get("/image", (req,res) => {
+
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
 
 // getting each model their own API keys since NVIDIA does not provide single account based APIKEY. This matches to what usr selects and that specific model URL and then API key is selected.
 const IMAGE_KEYS = {
+
   "black-forest-labs/flux.1-dev": process.env.FLUXDEV_API_KEY,
   "black-forest-labs/flux.1-schnell": process.env.FLUXSCHNELL_API_KEY,
-  "stabilityai/stable-diffusion-3.5-large": process.env.STABLE_API_KEY,
+  "stabilityai/stable-diffusion-3.5-large": process.env.STABLE_API_KEY, // no longer used cause endpoint does not work
 };
 
 // default 100kb limit is not enough for base64 for image conversion and then sending as json
@@ -35,7 +48,7 @@ app.post("/api/chat", async (req, res) => {
         messages: [{ role: "system", content: systemprompt },...messages],
         temperature: 1,
         top_p: 1,
-        max_tokens: 6144, // def is around 16k but lowered for fast output
+        max_tokens: 8192, // def is around 16k but lowered for fast output
         // reasoning_effort: "low", (I've used non reasoning model right now)
         stream: false,
       }),
@@ -46,7 +59,7 @@ app.post("/api/chat", async (req, res) => {
 
     res.json({ reply: data.choices[0].message.content });
   } catch (err) {
-        console.error(err);
+
         res.status(500).json({ error: "Something went wrong" });
       }
 });
@@ -62,28 +75,38 @@ app.post("/api/generate-image", async (req, res) => {
     // from above, taking keys for selected specific model
     const apiKey = IMAGE_KEYS[model];
 
-    const response = await fetch(`https://ai.api.nvidia.com/v1/genai/${model}`, {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-      },
-      body: JSON.stringify({ 
-        prompt: prompt,
-        mode: "base",
-        cfg_scale: 3.5,
-        width: 1024,
-        height: 1024,
-        seed: 0,
-        steps: 50,
 
-       }),
-    });
+    // since SD uses aspect ratio format and flux uses sample and height / width. So, simple gate on model name us used to determine those params
+    let payload;
+
+        
+        payload = {
+          prompt: prompt,
+          samples: 1,
+          width: 1024,
+          height: 1024,
+          steps: model === "black-forest-labs/flux.1-schnell" ? 4 : 50,
+          seed: 0,
+          
+        };
+
+
+      const response = await fetch(`https://ai.api.nvidia.com/v1/genai/${model}`, {
+        method: "POST",
+        headers: { 
+
+          "Authorization": `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
+
+        body: JSON.stringify(payload),  
+      });
+    
 
    if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(errorData.error || "Failed to generate image.");
+      throw new Error(`NVIDIA returned ${response.status}: ${errorText.slice(0, 200)}`);  
     }
 
   // for converting response to image URL and then updating the img card
@@ -102,25 +125,23 @@ app.post("/api/generate-image", async (req, res) => {
     imageData = data.image.startsWith("data:")
 
       ? data.image
-      : `data:image/jpeg;base64, ${data.image}`;
+      : `data:image/jpeg;base64,${data.image}`;
    }
+   
    else {
 
-    throw new error("unexpected image response format");
+    throw new Error("unexpected image response format");
 
    }
   
    res.json({ imageBase64: imageData});
 
 
-
-
   } catch (error) {
-    console.error(error);
+
     res.status(500).json({ error: error.message });
   }
 });
-
 
 
 app.listen(3000, () => console.log("Server running on http://localhost:3000"));
