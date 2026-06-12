@@ -19,6 +19,7 @@
   "homepage": "https://github.com/Bivaas/AI-chatbot#readme",
   "keywords": [],
   "dependencies": {
+    "@clerk/express": "^2.1.26",
     "dotenv": "^17.4.2",
     "express": "^5.2.1"
   }

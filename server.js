@@ -1,9 +1,13 @@
 require("dotenv").config();
+
+const { getAuth } = require("@clerk/express");
 const express = require("express");
 const path = require("path");
 const systemprompt = require("./systemprompt");
 
 const app = express();
+
+
 
 // routing to have clean URL in chatbot page and image page
 app.get("/image", (req, res) => {
@@ -30,10 +34,14 @@ const IMAGE_KEYS = {
 app.use(express.json( { limit: "25mb" }));
 app.use(express.static(path.join(__dirname, "public")));
 
+app.use(clerkMiddleware());
+
 
 // API setup from NVIDIA website (for CHATBOT)
 
 app.post("/api/chat", async (req, res) => {
+
+  const { userId } = getAuth(req);
   try {
     const { messages } = req.body;
 
@@ -69,6 +77,8 @@ app.post("/api/chat", async (req, res) => {
 //API setup from NVIDIA (for IMAGE GEN)
  
 app.post("/api/generate-image", async (req, res) => {
+
+  const { userId } = getAuth(req);
   try {
     const { model, prompt } = req.body;
 
