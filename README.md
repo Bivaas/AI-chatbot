@@ -39,8 +39,10 @@ aspect ratio only works for frontend grid (client side). If you download the ima
 
 # Assets
 
+```
 icon library: https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css
 another icon library: https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded
 marked js (md to html for AI response): https://cdn.jsdelivr.net/npm/marked/marked.min.js
 Emoji Mart: https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js
+```
 
