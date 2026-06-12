@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const { getAuth } = require("@clerk/express");
+const { clerkMiddleware, getAuth } = require("@clerk/express");
 const express = require("express");
 const path = require("path");
 const systemprompt = require("./systemprompt");
