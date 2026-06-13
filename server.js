@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const { MongoClient } = require("mongodb");
+const { MongoClient, ObjectId } = require("mongodb");
 
 
 let cachedDb = null; 
@@ -207,7 +207,7 @@ app.post("/api/chat", async (req, res) => {
         conversationId: conversationId,
         userId: userId,
         role: "user",
-        content: usertext,
+        content: userText,
         createdAt: sentAt,
       },
 
@@ -222,17 +222,12 @@ app.post("/api/chat", async (req, res) => {
 
     ]);
 
-    const { ObjectId } = require("mongodb");
-
     await db.collection("conversations").updateOne (
 
       { _id: new ObjectId(conversationId) },
       { $set: { updatedAt: new Date() } }
 
     );
-
-    res.join ({ reply});
-
 
 
     res.json({ reply: data.choices[0].message.content });
