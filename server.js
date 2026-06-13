@@ -103,7 +103,7 @@ const imgratelimit = new Ratelimit ({
 
 
 // fore new conversation which returns to user id for multi-chat design
-aoo.post ("/api/conversation", async (req, res) => {
+app.post ("/api/conversation", async (req, res) => {
 
   const { userId } = getAuth(req);
 
@@ -116,7 +116,7 @@ aoo.post ("/api/conversation", async (req, res) => {
     const now = new Date();
 
 
-    const result = await db.collections("conversation").insertOne ({
+    const result = await db.collection("conversations").insertOne ({
 
       userId: userId,
       title: "New chat",
@@ -124,7 +124,7 @@ aoo.post ("/api/conversation", async (req, res) => {
       updatedAt: now,
     });
 
-    res.join ({ conversationId: result.insertedId });
+    res.json ({ conversationId: result.insertedId });
 
   } catch (err) {
 
@@ -287,6 +287,7 @@ app.post("/api/generate-image", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
 
 
 app.listen(3000, () => console.log("Server running on http://localhost:3000"));
