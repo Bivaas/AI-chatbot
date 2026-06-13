@@ -9,7 +9,7 @@ async function getDb() {
 
   if (cachedDb) return cachedDb;
 
-  const client = new MongoClient(process.env.MONGODB_URL);
+  const client = new MongoClient(process.env.MONGODB_URI);
 
   await client.connect();
 
@@ -43,6 +43,30 @@ app.get("/", (req,res) => {
 app.get("/login", (req,res) => {
 
   res.sendFile(path.join(__dirname, "public", "login.html"));
+});
+
+
+// route to fetch chat messages from stored text field in UI messages by oldest first sorting for given specific user id 
+app.get("/api/history", async (req, res) => {
+  const {userId} = getAuth(req);
+
+  if (!userId) return res.status(401).json({ error: "Not signed in"});
+
+  try { 
+    
+    const db = await db.collection("chats")
+
+      .find({ userId: userId })
+      .sort({ createdAt: 1})
+      .toArray();
+
+      res.json({ history });
+
+  }
+
+  catch (err) { 
+    res.status(500).json({ error: "Could not load history" });
+  } 
 });
 
 
