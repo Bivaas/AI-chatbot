@@ -20,6 +20,8 @@
   "keywords": [],
   "dependencies": {
     "@clerk/express": "^2.1.26",
+    "@upstash/ratelimit": "^2.0.8",
+    "@upstash/redis": "^1.38.0",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "mongodb": "^7.3.0"

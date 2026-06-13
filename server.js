@@ -26,6 +26,9 @@ const systemprompt = require("./systemprompt");
 
 const app = express();
 
+const { ratelimit } = require("@upstash/ratelimit");
+const { redis } = require("@upstash/redis");
+
 // default 100kb limit is not enough for base64 for image conversion and then sending as json
 app.use(express.json( { limit: "25mb" }));
 
@@ -76,6 +79,13 @@ app.get("/api/history", async (req, res) => {
   catch (err) { 
     res.status(500).json({ error: "Could not load history" });
   } 
+});
+
+
+// for ratelimiting the chat with redis. (10 request per 60sec since less no. of users will be there)
+const ratelimit = new Ratelimit ({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(10, "60 s"),
 });
 
 
