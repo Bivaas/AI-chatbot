@@ -1,3 +1,4 @@
+
 require("dotenv").config();
 
 const { MongoClient } = require("mongodb");
@@ -24,6 +25,13 @@ const path = require("path");
 const systemprompt = require("./systemprompt");
 
 const app = express();
+
+// default 100kb limit is not enough for base64 for image conversion and then sending as json
+app.use(express.json( { limit: "25mb" }));
+
+app.use(clerkMiddleware());
+
+app.use(express.static(path.join(__dirname, "public")));
 
 
 
@@ -54,10 +62,11 @@ app.get("/api/history", async (req, res) => {
 
   try { 
     
-    const db = await db.collection("chats")
+    const db = await getDb();
+    const history = await db.collection("chats")
 
       .find({ userId: userId })
-      .sort({ createdAt: 1})
+      .sort({ createdAt: 1 })
       .toArray();
 
       res.json({ history });
@@ -77,12 +86,6 @@ const IMAGE_KEYS = {
   "black-forest-labs/flux.1-schnell": process.env.FLUXSCHNELL_API_KEY,
   "stabilityai/stable-diffusion-3.5-large": process.env.STABLE_API_KEY, // no longer used cause endpoint does not work
 };
-
-// default 100kb limit is not enough for base64 for image conversion and then sending as json
-app.use(express.json( { limit: "25mb" }));
-app.use(express.static(path.join(__dirname, "public")));
-
-app.use(clerkMiddleware());
 
 
 // API setup from NVIDIA website (for CHATBOT)
@@ -142,6 +145,8 @@ app.post("/api/chat", async (req, res) => {
 app.post("/api/generate-image", async (req, res) => {
 
   const { userId } = getAuth(req);
+
+  if (!userId) return res.status(401).json({ error: "Sign in first !"});
   try {
     const { model, prompt } = req.body;
 

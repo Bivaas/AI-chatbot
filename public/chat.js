@@ -45,18 +45,31 @@ const loadHistory = async () => {
                 : lastUserMsg.content.find(p => p.type === "text")?.text || "";
 
 
+            // rebuild of old user messages history
             const userDiv = createMessageElement(`<div class="message-text"></div>`, "user-message");
+
+            userDiv.querySelector(".message-text").textContent = userText;
+
+            chatBody.appendChild(userDiv);
+
+
+            // rebuild of old bot messages history
+            const botDiv = createMessageElement(`<div class="message-text"></div>`, "user-message");
 
             botDiv.querySelector(".message-text").innerHTML = marked.parse(record.reply);
 
             chatBody.appendChild(botDiv);
         });
+  
     }
 
     catch (error) { 
         console.error(error)
     }
 };
+
+    loadHistory();
+
 
 // outgoing user mesages
 const handleOutgoingMessage = (e) => {
