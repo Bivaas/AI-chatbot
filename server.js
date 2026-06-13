@@ -1,4 +1,3 @@
-
 require("dotenv").config();
 
 const { MongoClient } = require("mongodb");
@@ -28,6 +27,14 @@ const app = express();
 
 const { Ratelimit } = require("@upstash/ratelimit");
 const { Redis } = require("@upstash/redis");
+
+// getting each model their own API keys since NVIDIA does not provide single account based APIKEY. This matches to what usr selects and that specific model URL and then API key is selected.
+const IMAGE_KEYS = {
+
+  "black-forest-labs/flux.1-dev": process.env.FLUXDEV_API_KEY,
+  "black-forest-labs/flux.1-schnell": process.env.FLUXSCHNELL_API_KEY,
+  "stabilityai/stable-diffusion-3.5-large": process.env.STABLE_API_KEY, // no longer used cause endpoint does not work
+};
 
 // default 100kb limit is not enough for base64 for image conversion and then sending as json
 app.use(express.json( { limit: "25mb" }));
@@ -95,13 +102,37 @@ const imgratelimit = new Ratelimit ({
 });
 
 
-// getting each model their own API keys since NVIDIA does not provide single account based APIKEY. This matches to what usr selects and that specific model URL and then API key is selected.
-const IMAGE_KEYS = {
+// fore new conversation which returns to user id for multi-chat design
+aoo.post ("/api/conversation", async (req, res) => {
 
-  "black-forest-labs/flux.1-dev": process.env.FLUXDEV_API_KEY,
-  "black-forest-labs/flux.1-schnell": process.env.FLUXSCHNELL_API_KEY,
-  "stabilityai/stable-diffusion-3.5-large": process.env.STABLE_API_KEY, // no longer used cause endpoint does not work
-};
+  const { userId } = getAuth(req);
+
+  if (!userId) return res.status(401).json ({ error: "Sign in first !!"});
+
+
+  try { 
+    const db = await getDb();
+
+    const now = new Date();
+
+
+    const result = await db.collections("conversation").insertOne ({
+
+      userId: userId,
+      title: "New chat",
+      createdAt: now,
+      updatedAt: now,
+    });
+
+    res.join ({ conversationId: result.insertedId });
+
+  } catch (err) {
+
+    res.status(500).json ({ error: "Could not create conversation !"});
+  }
+});
+
+
 
 
 // API setup from NVIDIA website (for CHATBOT)
