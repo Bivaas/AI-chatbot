@@ -1,5 +1,23 @@
 require("dotenv").config();
 
+const { MongoClient } = require("mongodb");
+
+
+let cachedDb = null; 
+
+async function getDb() {
+
+  if (cachedDb) return cachedDb;
+
+  const client = new MongoClient(process.env.MONGODB_URL);
+
+  await client.connect();
+
+  cachedDb = client.db();
+
+  return cachedDb;
+}
+
 const { clerkMiddleware, getAuth } = require("@clerk/express");
 const express = require("express");
 const path = require("path");
@@ -47,7 +65,11 @@ app.use(clerkMiddleware());
 
 app.post("/api/chat", async (req, res) => {
 
+
   const { userId } = getAuth(req);
+
+  if (!userId) return res.status(401).json({error: "Not signed in"});
+
   try {
     const { messages } = req.body;
 
@@ -68,8 +90,19 @@ app.post("/api/chat", async (req, res) => {
       }),
     });
 
+
     const data = await response.json();
     if (!response.ok) return res.status(response.status).json({ error: data });
+
+
+    const db = await getDb();
+
+    await db.collection("chats").insertOne ( { 
+      userId: userId, 
+      messages: messages,
+      reply: data.choices[0].message.content,
+    })
+
 
     res.json({ reply: data.choices[0].message.content });
   } catch (err) {
