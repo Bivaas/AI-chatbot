@@ -114,6 +114,10 @@ app.post("/api/chat", async (req, res) => {
   if (!userId) return res.status(401).json({error: "Not signed in !"});
 
 
+  const sentAt = new Date();
+
+
+
   const { success } = await ratelimit.limit(userId);
 
   if (!success) {
@@ -152,6 +156,7 @@ app.post("/api/chat", async (req, res) => {
       userId: userId, 
       messages: messages,
       reply: data.choices[0].message.content,
+      createdAt: sentAt,
     })
 
 
