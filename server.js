@@ -65,27 +65,32 @@ app.get("/login", (req,res) => {
 
 
 // route to fetch chat messages from stored text field in UI messages by oldest first sorting for given specific user id 
-app.get("/api/history", async (req, res) => {
-  const {userId} = getAuth(req);
 
-  if (!userId) return res.status(401).json({ error: "Not signed in"});
+
+
+app.get("/api/conversations/:id/messages", async (req, res) => {
+
+  const { userId } = getAuth(req);
+
+  if (!userId) return res.status(401).json ({ error: "Not signed in !!" });
+
 
   try { 
-    
     const db = await getDb();
-    const history = await db.collection("chats")
 
-      .find({ userId: userId })
-      .sort({ createdAt: 1 })
-      .toArray();
+    const messages = await db.collection("messages")
+    .find ({ conversationId: req.params.id, userId: userId })
+    .sort ({ createdAt:1 })
+    .toArray();
 
-      res.json({ history });
+    res.json ({ messages });
 
   }
 
-  catch (err) { 
-    res.status(500).json({ error: "Could not load history" });
-  } 
+  catch (err) {
+
+    res.status(500).json ({ error: "Could not load messages !"});
+  }
 });
 
 
@@ -103,7 +108,7 @@ const imgratelimit = new Ratelimit ({
 
 
 // fore new conversation which returns to user id for multi-chat design
-app.post ("/api/conversation", async (req, res) => {
+app.post ("/api/conversations", async (req, res) => {
 
   const { userId } = getAuth(req);
 

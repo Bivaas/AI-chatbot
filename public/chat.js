@@ -24,7 +24,6 @@ const createMessageElement = (content, classes) => {
     return div;
 }
 
-
 // to show the messages to user frontend frm history which should store chat data and should be attached to user id
 const loadHistory = async () => { 
     try { 
@@ -69,6 +68,43 @@ const loadHistory = async () => {
 };
 
     loadHistory();
+
+
+    const loadMessages = async (conversationId) => {
+
+  try {
+    const response = await fetch(`/api/conversations/${conversationId}/messages`);
+
+    if (!response.ok) return;
+
+    const data = await response.json();
+
+
+    data.messages.forEach((msg) => {
+
+      if (msg.role === "user") {
+
+        const userDiv = createMessageElement(`<div class="message-text"></div>`, "user-message" );
+        userDiv.querySelector(".message-text").textContext = msg.content;
+        chatBody.appendChild(userDiv);
+
+      } else { 
+
+        const botDiv = createMessageElement(`<svg class="bot-avatar" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 1024 1024"><path d="M738.3 287.6H285.7c-59 0-106.8 47.8-106.8 106.8v303.1c0 59 47.8 106.8 106.8 106.8h81.5v111.1c0 .7.8 1.1 1.4.7l166.9-110.6 41.8-.8h117.4l43.6-.4c59 0 106.8-47.8 106.8-106.8V394.5c0-59-47.8-106.9-106.8-106.9z"></path></svg><div class="message-text"></div>`, "bot-message");
+        botDiv.querySelector(".message-text").innerHTML = marked.parse(msg.content);
+        chatBody.appendChild(botDiv);
+
+      }
+    });
+
+    chatBody.scrollTo ({ top: chatBody.scrollHeight, behaviour: "smooth"});
+    
+  } catch (error) {
+
+    console.error(error);
+  }
+};
+
 
 
 // outgoing user mesages
@@ -161,7 +197,7 @@ const handleOutgoingMessage = (e) => {
             const response = await fetch(API_URL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json"},
-                body: JSON.stringify({ messages: conversation }),
+                body: JSON.stringify({ messages: conversation, conversationId: currentConversationId }),
             });
 
             const data = await response.json();
