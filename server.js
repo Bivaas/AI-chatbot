@@ -26,8 +26,8 @@ const systemprompt = require("./systemprompt");
 
 const app = express();
 
-const { ratelimit } = require("@upstash/ratelimit");
-const { redis } = require("@upstash/redis");
+const { Ratelimit } = require("@upstash/ratelimit");
+const { Redis } = require("@upstash/redis");
 
 // default 100kb limit is not enough for base64 for image conversion and then sending as json
 app.use(express.json( { limit: "25mb" }));
@@ -88,6 +88,12 @@ const ratelimit = new Ratelimit ({
   limiter: Ratelimit.slidingWindow(10, "60 s"),
 });
 
+// for ratelimiting the chat with redis. (4 request per 60sec bcz image generation is $expensive$ and slow )
+const imgratelimit = new Ratelimit ({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(4, "60 s"),
+});
+
 
 // getting each model their own API keys since NVIDIA does not provide single account based APIKEY. This matches to what usr selects and that specific model URL and then API key is selected.
 const IMAGE_KEYS = {
@@ -105,7 +111,15 @@ app.post("/api/chat", async (req, res) => {
 
   const { userId } = getAuth(req);
 
-  if (!userId) return res.status(401).json({error: "Not signed in"});
+  if (!userId) return res.status(401).json({error: "Not signed in !"});
+
+
+  const { success } = await ratelimit.limit(userId);
+
+  if (!success) {
+
+    return res.status(429).json ({ error: "Have some patience !!"});
+  }
 
   try {
     const { messages } = req.body;
@@ -157,6 +171,13 @@ app.post("/api/generate-image", async (req, res) => {
   const { userId } = getAuth(req);
 
   if (!userId) return res.status(401).json({ error: "Sign in first !"});
+
+  const { success } = await imgratelimit.limit(userId);
+
+  if (!success) { 
+    return res.status(429).json ({ error: "Have some patience !!"});
+  }
+
   try {
     const { model, prompt } = req.body;
 
