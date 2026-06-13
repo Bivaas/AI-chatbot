@@ -45,6 +45,31 @@ app.use(express.static(path.join(__dirname, "public")));
 
 
 
+// route the conversations (lists) to user one frontend
+app.get("/api/conversations", async (req, res) => {
+
+  const { userId } = getAuth(req);
+
+  if (!userId) return res.status(401).json ({ error: "Sign in first !!"});
+
+
+  try { 
+    const db = await getDb();
+
+    const conversation = await ad.collection("conversations")
+      .find ({ userId: userId })
+      .sort ({ updatedAt: -1 })
+      .toArray();
+
+      res.json ({ conversations });
+
+  } catch (err) {
+
+    res.status(500).json ({ error: "Could not load conversations !!" });
+  }
+}); 
+
+
 // routing to have clean URL in chatbot page and image page and login page
 app.get("/image", (req, res) => {
 
