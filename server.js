@@ -181,14 +181,53 @@ app.post("/api/chat", async (req, res) => {
     if (!response.ok) return res.status(response.status).json({ error: data });
 
 
+    // setup of conversation from normal chat
+    const { conversationId } = req.body;
     const db = await getDb();
 
-    await db.collection("chats").insertOne ( { 
-      userId: userId, 
-      messages: messages,
-      reply: data.choices[0].message.content,
-      createdAt: sentAt,
-    })
+    const reply = data.choices[0].message.content;
+
+
+    const lastUserMsg = messages[messages.length - 1];
+    const userText = typeof lastUserMsg.content ==="string"
+
+    ? lastUserMsg.content
+    : lastUserMsg.content.find (p => p.type === "text")?.text || "";
+
+    //response of user and AI saved as two docs for history
+    await db.collection("messages").insertMany([
+
+      {
+
+        conversationId: conversationId,
+        userId: userId,
+        role: "user",
+        content: usertext,
+        createdAt: sentAt,
+      },
+
+      {
+
+        conversationId: conversationId,
+        userId: userId, 
+        role: "assistant",
+        content: reply,
+        createdAt: new Date(),
+      },
+
+    ]);
+
+    const { ObjectId } = require("mongodb");
+
+    await db.collection("conversations").updateOne (
+
+      { _id: new ObjectId(conversationId) },
+      { $set: { updatedAt: new Date() } }
+
+    );
+
+    res.join ({ reply});
+
 
 
     res.json({ reply: data.choices[0].message.content });

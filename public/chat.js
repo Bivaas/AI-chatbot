@@ -135,6 +135,21 @@ const handleOutgoingMessage = (e) => {
         }
     };
 
+
+    let currentConversationId = null;
+
+    const startConversation = async () => {
+
+        const res = await fetch("/api/conversations", { method: "POST"});
+        const data = await res.json();
+        currentConversationId = data.conversationId;
+
+    };
+
+    startConversation();
+
+
+
     const generateBotResponse = async (incomingMessageDiv) => {
         const messageTextElement = incomingMessageDiv.querySelector(".message-text");
 
