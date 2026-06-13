@@ -9,16 +9,22 @@ const app = express();
 
 
 
-// routing to have clean URL in chatbot page and image page
+// routing to have clean URL in chatbot page and image page and login page
 app.get("/image", (req, res) => {
 
   res.sendFile(path.join(__dirname, "public", "image.html"));
 });
 
 
-app.get("/image", (req,res) => {
+app.get("/", (req,res) => {
 
   res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
+
+app.get("/login", (req,res) => {
+
+  res.sendFile(path.join(__dirname, "public", "login.html"));
 });
 
 
