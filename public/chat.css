@@ -29,7 +29,26 @@ body {
     border-radius: 1px;
     box-shadow: 0 0 128px 0 rgba(0, 0, 0, 0.1),
     0 32px 64px -48px rgba(0,0,0, 0.5);
+
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    grid-template-rows: auto 1fr auto;
+    height: 100vh;
 }
+
+
+.chat-slidebar { 
+
+    grid-column: 1;
+    grid-row: 1/4;
+    background: #fff;
+    border-right: 1px solid #ddd;
+    padding: 15px;
+    overflow-y: auto;
+}
+
+
+
 
 .chat-header {
     display: flex;
@@ -37,6 +56,9 @@ body {
     background: #5350C4;
     padding: 15px 22px;
     justify-content: space-between;
+
+    grid-column: 2;
+    grid-row: 1;
 }
 
 .chat-header .header-info {
@@ -99,10 +121,45 @@ body {
     padding: 25px 22px;
     display: flex;
     gap: 20px;
-    height: calc(100vh - 145px);
+    height: auto;
     margin-bottom: 82px;
     overflow-y: auto;
     flex-direction: column;
+    min-height: 0;
+
+    grid-column: 2;
+    grid-row: 2;
+    overflow-y: auto;
+}
+
+
+#new-chat-btn { 
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    background: #6c47ff;
+    color: white;
+    font-size: 14px;
+
+    padding: 10px;
+    margin-bottom: 15px;
+}
+
+.conversation-item { 
+
+    border-radius: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px;
+
+    padding: 10px;
+    margin-bottom: 5px;
+}
+
+.conversation-item:hover { 
+    background: #e0e0ff;
+    transform: translateY(1px);
 }
 
 /* message section of chat body (user and bot both) */ 
@@ -244,9 +301,9 @@ body {
 }
 
 .chat-footer {
-    position: absolute;
+    position: auto;
     bottom: 0%;
-    width: 100%;
+    width: auto;
     background: #fff;
     padding: 15px 22px 20px;
 }
