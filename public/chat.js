@@ -9,6 +9,21 @@ const fileCancelButton = document.querySelector("#file-cancel");
 const API_URL = "/api/chat";
 const conversation = []
 
+
+    let currentConversationId = null;
+
+    const startConversation = async () => {
+
+        const res = await fetch("/api/conversations", { method: "POST"});
+        const data = await res.json();
+        currentConversationId = data.conversationId;
+
+    };
+
+    startConversation();
+
+    
+
 const userData = {
     message: null,
     file: {
@@ -221,36 +236,6 @@ const handleOutgoingMessage = (e) => {
     };
 
 
-    let currentConversationId = null;
-
-    const startConversation = async () => {
-
-        const res = await fetch("/api/conversations", { method: "POST"});
-        const data = await res.json();
-        currentConversationId = data.conversationId;
-
-    };
-
-    startConversation();
-
-
-
-    // for making new chat button create new conversation by using ^ logic and also clear memory (of array)
-    const newChatBtn = document.querySelector("#new-chat-btn");
-
-    newChatBtn.addEventListener("click", async () => { 
-
-        const res = await fetch("/api/conversations", { method: "POST" });
-        const data = await res.json();
-        currentConversationId = data.conversationId;
-
-
-        chatBody.innerHTML = "";
-        conversation.length = 0;
-
-        loadConversation();
-    });
-
 
 
     const generateBotResponse = async (incomingMessageDiv) => {
@@ -349,6 +334,23 @@ const picker = new EmojiMart.Picker( {
     }
 
 } );
+
+
+    // for making new chat button create new conversation by using ^ logic and also clear memory (of array)
+    const newChatBtn = document.querySelector("#new-chat-btn");
+
+    newChatBtn.addEventListener("click", async () => { 
+
+        const res = await fetch("/api/conversations", { method: "POST" });
+        const data = await res.json();
+        currentConversationId = data.conversationId;
+
+
+        chatBody.innerHTML = "";
+        conversation.length = 0;
+
+        loadConversation();
+    });
 
 
 document.querySelector(".chat-form").appendChild(picker);
