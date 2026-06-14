@@ -240,7 +240,7 @@ const handleOutgoingMessage = (e) => {
 
     newChatBtn.addEventListener("click", async () => { 
 
-        const res = await fetch("/api/conversation", { method: "POST" });
+        const res = await fetch("/api/conversations", { method: "POST" });
         const data = await res.json();
         currentConversationId = data.conversationId;
 

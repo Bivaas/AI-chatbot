@@ -255,6 +255,15 @@ app.post("/api/chat", async (req, res) => {
     );
 
 
+    // first messages text to be the title in conversation (40)
+    await db.collection("conversations").updateOne (
+
+      { _id: new ObjectId(conversationId), title: "New chat" },
+      { $set: { title: userText.slice(0, 40) } }
+
+    );
+
+
     res.json({ reply: data.choices[0].message.content });
   } catch (err) {
 
