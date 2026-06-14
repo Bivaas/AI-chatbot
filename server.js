@@ -56,7 +56,7 @@ app.get("/api/conversations", async (req, res) => {
   try { 
     const db = await getDb();
 
-    const conversation = await ad.collection("conversations")
+    const conversations = await db.collection("conversations")
       .find ({ userId: userId })
       .sort ({ updatedAt: -1 })
       .toArray();

@@ -88,12 +88,12 @@ const loadHistory = async () => {
                 const item = document.createElement("div");
                 item.classList.add("conversation-item");
                 item.textContent = conv.title || "New chat";
-                item.dataset.id = conv.id;
+                item.dataset.id = conv._id;
                 conversationList.appendChild(item);
             });
 
         }       catch (err) { 
-            console.error(error);
+            console.error(err);
         }
      };
 
@@ -118,7 +118,7 @@ const loadHistory = async () => {
      });
 
 
-
+    // old messages history but view only ( not stored in array for dispay lime mem)
     const loadMessages = async (conversationId) => {
 
   try {
@@ -134,7 +134,7 @@ const loadHistory = async () => {
       if (msg.role === "user") {
 
         const userDiv = createMessageElement(`<div class="message-text"></div>`, "user-message" );
-        userDiv.querySelector(".message-text").textContext = msg.content;
+        userDiv.querySelector(".message-text").textContent = msg.content;
         chatBody.appendChild(userDiv);
 
       } else { 
@@ -146,7 +146,7 @@ const loadHistory = async () => {
       }
     });
 
-    chatBody.scrollTo ({ top: chatBody.scrollHeight, behaviour: "smooth"});
+    chatBody.scrollTo ({ top: chatBody.scrollHeight, behavior: "smooth"});
     
   } catch (error) {
 
@@ -232,6 +232,24 @@ const handleOutgoingMessage = (e) => {
     };
 
     startConversation();
+
+
+
+    // for making new chat button create new conversation by using ^ logic and also clear memory (of array)
+    const newChatBtn = document.querySelector("#new-chat-btn");
+
+    newChatBtn.addEventListener("click", async () => { 
+
+        const res = await fetch("/api/conversation", { method: "POST" });
+        const data = await res.json();
+        currentConversationId = data.conversationId;
+
+
+        chatBody.innerHTML = "";
+        conversation.length = 0;
+
+        loadConversation();
+    });
 
 
 
