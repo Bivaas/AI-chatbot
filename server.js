@@ -70,6 +70,29 @@ app.get("/api/conversations", async (req, res) => {
 }); 
 
 
+// route to delete conversation of specific id 
+app.delete("/api/conversation/:id", async (req, res) => { 
+
+  const {userId} = getAuth(req);
+  if (!userId) return res.status(401).json({ error: "Sign in first !!"});
+
+  try { 
+
+    const db = await getDb();
+    const conversationId = req.params.id;
+
+    await db.collection("conversations").deleteOne({ _id: new ObjectId(conversationId), userId });
+    await db.collection("messages").deleteMany ({ conversationId: conversationId, userId });
+
+    res.json ({ success: true });
+  }
+
+  catch (err) { 
+    res.status(500).json ({ error: "Could not delete em !"});
+  }
+});
+
+
 // routing to have clean URL in chatbot page and image page and login page
 app.get("/image", (req, res) => {
 
