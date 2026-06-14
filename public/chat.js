@@ -101,6 +101,23 @@ const loadHistory = async () => {
      loadConversation();
 
 
+     // click handler to display message when clicked which ^ function fetches messages
+     conversationList.addEventListener("click", (e) => { 
+
+        const item = e.target.closest(".conversation-item");
+
+        if (!item) return;
+
+
+        const conversationId = item.dataset.id;
+        currentConversationId = conversationId;
+
+
+        chatBody.innerHTML = "";
+        loadMessages(conversationId);
+     });
+
+
 
     const loadMessages = async (conversationId) => {
 

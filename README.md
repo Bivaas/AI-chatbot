@@ -1,17 +1,8 @@
 # AI Chatbot 
 
-This is an AI chatbot MVP (like chatgpt, clause or gemini) where I have used API of an open sourced model. This AI uses llama 3.2 vision with 90B parameter in the backend for chatbot. For image generation, I've FLUX.1 DEV and SCHNELL model.
+This is an AI chatbot (like chatgpt, clause or gemini) where I have used API of an open sourced model. This AI uses llama 3.2 vision with 90B parameter in the backend for chatbot. For image generation, I've FLUX.1 DEV and SCHNELL model.
 
 I did not used less resource demanding models because I would need more powerful AI later in future. 
-
-# Some Features
-
-- File upload in chatbot to share images or extract contents (by using vision capable model)
-- Emoji Picker when chatting for emojis (from emoji mart library)
-- Systemprompt for context and guardrails
-- Two seperate Image generation model
-- Output image gallery grid which is downloadable
-- Preselected prompt by pressing dice button
 
 # Known issues 
 
@@ -19,9 +10,12 @@ The model takes slightly longer time to respond due to two main reason. The firs
 
 Text conversations are stored in memory as array and forwarded in next chat conversation. If you initiate two different conversation with different context, the AI model might hallucinate (it did for me when I was doing image upload)
 
-# Next Future Improvements
+# what I've used 
 
-I would be adding several features like Dedicated database for storage, oauth for authentication / login, rate limitng to not overwhelm API usage and multi chat UI (similar to claude / gemini)
+Express for server side backend functions deployed as serverless function in vercel
+clerk for authentication 
+MongoDB for database
+upstash redis for rate limiting 
 
 # Use of AI 
 
