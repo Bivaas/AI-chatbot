@@ -70,6 +70,38 @@ const loadHistory = async () => {
     loadHistory();
 
 
+
+     // rendering conversations (chats) in div made before in html 
+     const conversationList = document.querySelector("#conversation-list");
+
+     const loadConversation = async () => { 
+
+        try { 
+            const response = await fetch("/api/conversations");
+            if (!response.ok) return; 
+            const data = await response.json();
+
+
+            conversationList.innerHTML = ""; 
+            data.conversations.forEach((conv) => {
+
+                const item = document.createElement("div");
+                item.classList.add("conversation-item");
+                item.textContent = conv.title || "New chat";
+                item.dataset.id = conv.id;
+                conversationList.appendChild(item);
+            });
+
+        }       catch (err) { 
+            console.error(error);
+        }
+     };
+
+
+     loadConversation();
+
+
+
     const loadMessages = async (conversationId) => {
 
   try {
