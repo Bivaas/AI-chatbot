@@ -45,6 +45,37 @@ app.use(express.static(path.join(__dirname, "public")));
 
 
 
+// Web search with serper API through simple POST method
+async function webSearch(query) { 
+
+  const response = await fetch("https://google.serper.dev/search", { 
+
+    method: "POST",
+    headers: { 
+
+      "X-API-KEY": process.env.SERPER_API_KEY,
+      "Content-Type": "application/json",
+
+    },
+    body: JSON.stringify({ q: query }),
+
+  });
+
+
+  if (!response,ok) return "";
+
+  const data = await response.json();
+
+  const results = (data.organic || [])
+
+  .slice(0, 5)
+  .map((r) => `- ${r.title}: ${r.snippet} (${r.link})`)
+  .join("\n");
+
+  return results;
+}
+
+
 // route the conversations (lists) to user one frontend
 app.get("/api/conversations", async (req, res) => {
 
@@ -210,7 +241,23 @@ app.post("/api/chat", async (req, res) => {
   }
 
   try {
-    const { messages } = req.body;
+    const { messages, conversationId, webSearch: useSearch } = req.body;
+
+    if (webSearch) { 
+
+      const lastMsg = messages[messages.length - 1];
+      const query = typeof lastMsg.content ==="string"
+
+      ? lastMsg.content
+      : lastMsg.content.find (p => p.type ==="text") ?.text || "";
+
+    
+      const results = await webSearch(query);
+
+      if (results) { 
+        searchContext = `These are the current web search results for the user's question. Use them to answer any accurately and cite links where relevant:\n\n${results} `;
+      }
+    }
 
     const response = await fetch("https://integrate.api.nvidia.com/v1/chat/completions", {
       method: "POST",
