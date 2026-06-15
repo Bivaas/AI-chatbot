@@ -71,7 +71,7 @@ app.get("/api/conversations", async (req, res) => {
 
 
 // route to delete conversation of specific id 
-app.delete("/api/conversation/:id", async (req, res) => { 
+app.delete("/api/conversations/:id", async (req, res) => { 
 
   const {userId} = getAuth(req);
   if (!userId) return res.status(401).json({ error: "Sign in first !!"});

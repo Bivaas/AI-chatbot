@@ -103,7 +103,7 @@ const loadHistory = async () => {
                 const item = document.createElement("div");
                 item.classList.add("conversation-item");
                 item.dataset.id = conv._id;
-                item.innerHTMl = `<span class="conv-title">${conv.title || "New chat"}</span><button class="delete-conv">X</button>`;
+                item.innerHTML = `<span class="conv-title">${conv.title || "New chat"}</span><button class="delete-conv">X</button>`;
                 conversationList.appendChild(item);
             });
 
