@@ -116,20 +116,30 @@ const loadHistory = async () => {
      loadConversation();
 
 
-     // click handler to display message when clicked which ^ function fetches messages
-     conversationList.addEventListener("click", (e) => { 
+     // click handler to display message when clicked which ^ function fetches messages && del message too
+    conversationList.addEventListener("click", async (e) => { 
 
-        const item = e.target.closest(".conversation-item");
+        if (e.target.classList.contains("delete-conv")) { 
 
-        if (!item) return;
+            const item = e.target.closest(".conversation-item");
+            const conversationId = item.dataset.id;
+
+            await fetch(`/api/conversations/${conversationId}`, { method: "DELETE" });
+            loadConversation();
+
+            return;
+        }
 
 
-        const conversationId = item.dataset.id;
-        currentConversationId = conversationId;
+            const item = e.target.closest(".conversation-item");
 
+            if (!item) return;
 
-        chatBody.innerHTML = "";
-        loadMessages(conversationId);
+            currentConversationId = item.dataset.id;
+            chatBody.innerHTML = "";
+            conversation.length = 0;
+            loadMessages(currentConversationId);
+
      });
 
 
