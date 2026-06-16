@@ -243,7 +243,12 @@ app.post("/api/chat", async (req, res) => {
   try {
     const { messages, conversationId, webSearch: useSearch } = req.body;
 
-    if (webSearch) { 
+
+    //serper call for web search 
+
+    let searchContext;
+
+    if (useSearch) { 
 
       const lastMsg = messages[messages.length - 1];
       const query = typeof lastMsg.content ==="string"
@@ -259,6 +264,8 @@ app.post("/api/chat", async (req, res) => {
       }
     }
 
+
+
     const response = await fetch("https://integrate.api.nvidia.com/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -267,7 +274,14 @@ app.post("/api/chat", async (req, res) => {
       },
       body: JSON.stringify({
         model: "meta/llama-3.2-90b-vision-instruct",
-        messages: [{ role: "system", content: systemprompt },...messages],
+        messages: [
+
+          { role: "system", context: systemprompt },
+          ...(searchContext ? [{ role: "system", content: searchContext }] : []),
+            ...messages,
+          
+        ],
+
         temperature: 1,
         top_p: 1,
         max_tokens: 8192, // def is around 16k but lowered for fast output
@@ -282,7 +296,7 @@ app.post("/api/chat", async (req, res) => {
 
 
     // setup of conversation from normal chat
-    const { conversationId } = req.body;
+    
     const db = await getDb();
 
     const reply = data.choices[0].message.content;
