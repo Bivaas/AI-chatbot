@@ -347,10 +347,10 @@ body {
     border: none;
     outline: none;
     height: 47px;
-    width: 100%;
+    flex: 1;
     resize: none;
     font-size: 0.95rem;
-    padding: 14px 0 13px 18px;
+    padding: 14px 0 13px 6px;
     border-radius: inherit;
 }
 
@@ -455,9 +455,12 @@ body.show-emoji-picker em-emoji-picker {
     color: #a5a2d4;
     font-size: 22px;
     align-self: center;
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
 
-    padding: 0 8px;
-
+    padding: 0 18px;
+    
 }
 
 #web-search-toggle.active { 

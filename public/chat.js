@@ -6,12 +6,12 @@ const fileUploadWrapper = document.querySelector(".file-upload-wrapper");
 const fileCancelButton = document.querySelector("#file-cancel");
 
 
-let webSearch = false;
+let webSearchOn = false;
 
-const webSearchToggle = document.queryselector("#web-search-toggle");
+const webSearchToggle = document.querySelector("#web-search-toggle");
 webSearchToggle.addEventListener("click", () => { 
 
-    webSearchOn = !webSearchon; 
+    webSearchOn = !webSearchOn; 
     webSearchToggle.classList.toggle("active", webSearchOn);
 });
 
