@@ -19,7 +19,7 @@
     --color-text: #09090e;
     --color-placeholder: #5c5a87;
     --color-border:#d4d4ed;
-   --color-gradient: linear-gradient(135deg, #5c56e1, #8b5cf6);
+   --color-gradient: linear-gradient(135deg, #393c3d, #2b353b);
 }
 body{
     color: var(--color-text);
