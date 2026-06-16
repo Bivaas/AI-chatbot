@@ -62,7 +62,7 @@ async function webSearch(query) {
   });
 
 
-  if (!response,ok) return "";
+  if (!response.ok) return "";
 
   const data = await response.json();
 
@@ -276,7 +276,7 @@ app.post("/api/chat", async (req, res) => {
         model: "meta/llama-3.2-90b-vision-instruct",
         messages: [
 
-          { role: "system", context: systemprompt },
+          { role: "system", content: systemprompt },
           ...(searchContext ? [{ role: "system", content: searchContext }] : []),
             ...messages,
           
