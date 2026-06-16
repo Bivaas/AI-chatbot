@@ -13,10 +13,14 @@ Text conversations are stored in memory as array and forwarded in next chat conv
 # what I've used 
 
 Express for server side backend functions deployed as serverless function in vercel
-clerk for authentication 
+
+Clerk for authentication 
+
 MongoDB for database
-upstash redis for rate limiting 
-serper for real-time web-search ( toggled through web-search button in message-input field )
+
+Upstash redis for rate limiting 
+
+Serper for real-time web-search ( toggled through web-search button in message-input field )
 
 # Use of AI 
 
