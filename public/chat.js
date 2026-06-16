@@ -6,6 +6,16 @@ const fileUploadWrapper = document.querySelector(".file-upload-wrapper");
 const fileCancelButton = document.querySelector("#file-cancel");
 
 
+let webSearch = false;
+
+const webSearchToggle = document.queryselector("#web-search-toggle");
+webSearchToggle.addEventListener("click", () => { 
+
+    webSearchOn = !webSearchon; 
+    webSearchToggle.classList.toggle("active", webSearchOn);
+});
+
+
 const API_URL = "/api/chat";
 const conversation = []
 
@@ -259,7 +269,7 @@ const handleOutgoingMessage = (e) => {
             const response = await fetch(API_URL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json"},
-                body: JSON.stringify({ messages: conversation, conversationId: currentConversationId }),
+                body: JSON.stringify({ messages: conversation, conversationId: currentConversationId, webSearch: webSearchOn }),
             });
 
             const data = await response.json();

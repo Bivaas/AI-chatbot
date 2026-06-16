@@ -446,3 +446,21 @@ em-emoji-picker {
 body.show-emoji-picker em-emoji-picker {
     visibility: visible;
 }
+
+
+#web-search-toggle { 
+
+    background: none;
+    border: none;
+    color: #a5a2d4;
+    font-size: 22px;
+    align-self: center;
+
+    padding: 0 8px;
+
+}
+
+#web-search-toggle.active { 
+
+    color: rgb(16, 160, 16);
+}
