@@ -101,16 +101,18 @@
   type="text/javascript"></script>
 
 
-     <script>
+    <script>
   window.addEventListener('load', async function () {
     await Clerk.load({ ui: { ClerkUI: window.__internal_ClerkUICtor } });
 
     if (Clerk.isSignedIn) {
-      Clerk.mountUserButton(document.getElementById('user-button'));
+      window.location.href = "/";
     } else {
-      window.location.href = "/login";
+      const el = document.getElementById('sign-in');
+      if (el) {
+        Clerk.mountSignIn(el);
+      }
     }
-    
   });
 </script>
 
