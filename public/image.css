@@ -290,6 +290,10 @@ body{
     backdrop-filter: blur(5px);
     background: rgba(255, 255, 255, 0.25);
     cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .gallery-grid .img-card .status-container {
